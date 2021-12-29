@@ -115,3 +115,66 @@ print(numberForName4);
 // 같은 타입의 데이터를 순서 없이 하나의 묶음으로 저장하는 형태의 컬랙션 타입
 // 세트 내의 값은 중복되지 않는 유일한 값
 // 순서가 중요하지 않거나 각 요소가 유일한 값이어야 하는 경우에 사용
+
+// 배열과 마찬가지로 대괄호로 값들을 묶어 세트 타입을 표현
+var nameSet2: Set<String> = ["yagom", "chulsoo", "younghee"];
+
+// 타입 추론을 하게 되면 Set이 아닌 Array로 타입을 지정하게 된다.
+var numbers = [100, 200, 399];
+print(type(of: numbers)); // Array<Int>
+
+// 배열과 달리 줄여서 표현할 수 있는 축약형이 없다
+
+// 빈세트는 이니셜라이저 또는 리터럴 무넙을 통해 생성할 수 있다.
+var nameSet: Set<String> = Set<String>();
+var nameSet1: Set<String> = [];
+
+// 요소의 갯수는 count프로퍼티로 확인
+print(nameSet2.count); // 3
+
+print(nameSet2.isEmpty); // false
+
+// 요소 추가
+// insert("");
+
+nameSet2.insert("jenny");
+print(nameSet2.count); // 4
+
+print(nameSet2.remove("chulsoo"));
+
+// 교집합
+let englishClassStudents: Set<String> = ["john", "chulsoo", "yagom"];
+let koreanClassStudents: Set<String> = ["jenny", "yagom", "chulsoo", "hana", "minsoo"];
+
+let intersecSet: Set<String> = englishClassStudents.intersection(koreanClassStudents);
+print("intersection: \(intersecSet)"); // ["yagom", "chulsoo"]
+
+// 여집합
+let symmetricDiffSet: Set<String> = englishClassStudents.symmetricDifference(koreanClassStudents);
+print("symmetricDiff: \(symmetricDiffSet)"); // ["jenny", "minsoo", "john", "hana"]
+
+// 합집합
+let unionSet: Set<String> = englishClassStudents.union(koreanClassStudents);
+print("union: \(unionSet)"); // ["yagom", "minsoo", "hana", "jenny", "chulsoo", "john"]
+print(unionSet.sorted());
+
+// 차집합
+let subtractSet: Set<String> = englishClassStudents.subtracting(koreanClassStudents);
+print("subtract: \(subtractSet)"); // john
+
+
+let 새: Set<String> = ["비둘기", "닭", "기러기"];
+let 포유류: Set<String> = ["사자", "호랑이", "곰"];
+let 동물: Set<String> = 새.union(포유류);
+
+print(새.isDisjoint(with: 포유류)); // 서로 배타적인지 t
+print(새.isSubset(of: 동물)); // 새가 동물의 부분집합 인지 t
+print(동물.isSuperset(of: 포유류)); // 동물은 포유류의 전체 집합인지 t
+print(동물.isSuperset(of: 새)); // 동물은 새의 전체 집합인지 t
+
+// 열거형
+// 연관된 항목들을 묵어서 표현할 수 있는 타입.
+// 프로그래머가 정의해준 항목 값 외에는 추가/수정이 불가능
+// - 제한된 선택지를 주고 싶을때
+// - 정해진 값 외에는 입력받고 싶지 않을 때
+// - 예상된 입력 값이 한정되어 있을 때
