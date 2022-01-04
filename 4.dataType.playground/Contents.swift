@@ -178,3 +178,95 @@ print(동물.isSuperset(of: 새)); // 동물은 새의 전체 집합인지 t
 // - 제한된 선택지를 주고 싶을때
 // - 정해진 값 외에는 입력받고 싶지 않을 때
 // - 예상된 입력 값이 한정되어 있을 때
+
+enum School {
+    case primary;
+    case elementary;
+    case middle;
+    case high;
+    case college;
+    case university;
+    case graduate;
+}
+
+// 한줄로 표현 가능 하다
+enum School1 {
+    case primary, elementary, middle, high, college, university, graduate;
+}
+
+var highestEducationLevel: School = School.university;
+
+// 위 와 동일한 표현이다
+//var highestEducationLevel: School = .university;
+
+// 같은 타입의 School 내부의 항목으로만 highestEducationLevel의 값을 변경해 줄 수 있다.
+highestEducationLevel = .graduate;
+
+
+// 열거형은 원시값도 가질 수 있다.
+// 열거형 자체로도 하나의 값 이지만
+// 특정 타입으로 지정된 값을 가질 수 있다
+
+enum School2: String {
+case primary = "유치원", elementary = "초등학교", middle = "중학교";
+}
+
+//print(School2.primary);
+
+let eduLevel: School2 = .middle;
+
+print("학력은 \(eduLevel.rawValue)");
+
+
+enum School3: String {
+case primary = "유치원", elementary = "초등학교", middle = "중학교", college, university;
+}
+
+print(School3.university.rawValue); // university - 문자열 형태의 원시값을 지정하면 해당 원시값이, 원시값이 없다면 해당 항목이름이 그대로 출력
+
+enum Numbers: Int {
+    case zero
+    case one
+    case two
+    case ten = 10
+}
+
+print(Numbers.zero.rawValue, Numbers.one.rawValue, Numbers.two.rawValue, Numbers.ten.rawValue); // 0 1 2 10 - 숫자형 원시값을 가지면 0 ~
+
+//enum MainDish {
+//    case pasta(taste: String)
+//    case pizza(dough: String, topping: String)
+//    case chicken(withSauce: Bool)
+//    case rice
+//}
+//
+//var dinner: MainDish = MainDish.pasta(taste: "크림");
+//dinner = .pizza(dough: "치즈 크러스트", topping: "불고기")
+//dinner = .chicken(withSauce: true)
+//dinner = .rice
+
+//print(dinner);
+
+enum PastaTaste {
+    case cream, tomato
+}
+
+enum PizzaDough {
+    case cheeseCrust, thin, original
+}
+
+enum PizzaTopping {
+    case pepperoni, cheese, bacon
+}
+
+enum MainDish1 {
+    case pasta(taste: PastaTaste)
+    case pizza(dough: PizzaDough, topping: PizzaTopping)
+    case chicken(withSauce: Bool)
+    case rice
+}
+
+var dinner1: MainDish1 = MainDish1.pasta(taste: PastaTaste.cream);
+dinner1 = MainDish1.pizza(dough: PizzaDough.cheeseCrust, topping: PizzaTopping.bacon)
+
+
