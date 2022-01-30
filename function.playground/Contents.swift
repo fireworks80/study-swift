@@ -3,227 +3,157 @@ import UIKit
 // 함수는 일급 객체이다
 // 하나의 데이터 타입으로 사용할 수 있다.
 
-func introduce(name: String) -> String {
+// 7-1
+func hello(name: String) -> String {
     return "Hello \(name)"
 }
 
-print(introduce(name: "Jenny"))
+let helloJenny: String = hello(name: "Jenny");
+print(helloJenny);
 
-// 전달인자 레이블
-func sayHello(from myName: String, to name: String) -> String {
-    return "Hello \(name)! I'm \(myName)"
+
+// return 생략 가능
+func introduce(name: String) -> String {
+    "제 이름은 " + name + " 입니다"
 }
 
-print(sayHello(from: "yagom", to: "Jenny"));
+let introductJenny: String = introduce(name: "Jenny");
+print(introductJenny);
 
-// 레이블이 없는 함수
-func sayHello2(_ name: String, _ times: Int) -> String {
+
+// 7-2
+// 매개 변수 없는 함수
+func helloWorld() -> String {
+    return "Hello World"
+}
+
+print(helloWorld()); // Hello World
+
+// 7 - 3
+// 여러개 매개변수
+func sayHello(myName: String, yourName: String) -> String {
+    return "Hello \(yourName) I'm \(myName)"
+}
+
+print(sayHello(myName: "yagom", yourName: "Jenny")) // Hello Jenny I'm yagom
+
+// 7-4
+// 매개 변수에 전달 인자 레이블을 달 수 있다.
+// 전달 인자 레이블을 별도로 지정하면 함수 외부에서 매개변수의 역할을 좀 더 명확히 할 수 있다.
+func sayHelloLable(from myName: String, to yourName: String) -> String {
+    return "Hello \(yourName)! I'm \(myName)"
+}
+
+print(sayHelloLable(from: "Yagom", to: "Jenny"))
+
+// 7-5 (와일드 카드 식별자)
+// 전달인자 레이블이 없는 함수
+func sayHelloNotLable(_ name: String, _ times: Int) -> String {
     var result: String = "";
-    
-    for _ in 0..<times {
-        result += "Hello \(name)! " + " "
-    }
-    
-    return result;
-}
-
-print(sayHello2("chope", 2));
-
-// 매개변수 기본
-func sayHello3(_ name: String, times: Int = 3) -> String {
-    var result = "";
     
     for _ in 0..<times {
         result += "Hello \(name)" + " "
-    }
+    } // for
     
     return result;
 }
 
-print(sayHello3("Joe", times: 1));
+print(sayHelloNotLable("Chope", 2)); // Hello Chope Hello Chope
 
-// 7-8 가변 매개변수를 가지는 함수의 정의와 사용
-// 가변 매개 변수로 들어온 인자는 배열처럼 사용 할 수 있다.
-// 함수마다 가변 매개변수는 하나만 가질 수 있다.
-// 함수 전달 인자로 값을 전달할 때는 보통 값을 복사해서 넘긴다.
-func sayHelloToFriends(me: String, friends names: String...) -> String {
+
+// 7-6
+// 전달인자 레이블 변경을 통한 함수 중복 정의
+// 함수 오버로드
+func sayHellolb(to name: String, _ times: Int) -> String {
     var result: String = "";
     
-    for friend in names {
-        result += "Hello \(friend)!" + " "
-    }
+    for _ in 0..<times {
+        result += "Hello \(name)! "
+    } // for
     
-    result += "I'm " + me + "!"
+    return result
+}
+
+func sayHellolb(to name: String, repeatCount times: Int) -> String {
+    var result: String = ""
+    
+    for _ in 0..<times {
+        result += "Hello \(name)! "
+    } // for
+    
+    return result
+}
+
+print(sayHellolb(to: "Chope", 2))
+print(sayHellolb(to: "Chope", repeatCount: 2))
+
+
+// 7-7
+// 매개변수 기본값이 있는 함수
+// 기본매개 변수가 있는 함수도 함수 오버로드가 된다.
+func sayHellolb(_ name: String, times: Int = 3) -> String {
+    var result: String = "";
+    
+    for _ in 0..<times {
+        result += "Hello \(name)! "
+    } // for
+    
     return result;
 }
 
-
-print(sayHelloToFriends(me: "yagom", friends: "Johansson", "Jay", "Wizplan"));
-// Hello Johansson! Hello Jay! Hello Wizplan! I'myagom!
-
-print(sayHelloToFriends(me: "yagom"));
-// I'm yagom
+print(sayHellolb("Chope"));
 
 
+// 7-8
+// 가변 매개변수와 입출력 매개변수
+// 가변매개 변수: 0개 이상, 가변 매개변수로 들어온 인자값은 배열처람 사용 할 수 있다.
+func sayHelloToFriends(me: String, friends names: String...) -> String {
+    var result: String = ""
+    
+    for friend in names {
+        result += "Hello \(friend)! "
+    } // for
+    
+    result += "I'm \(me)!"
+    
+    return result;
+}
+
+print(sayHelloToFriends(me: "Yagom", friends: "Johansson", "Jay", "Wizplan"));
+print(sayHelloToFriends(me: "Yagom"))
 
 
-// 7-9 inout 매개변수의 활용
-// 값이 아닌 참조를 전달 하려면 입출력 매개변수를 사용한다.
-// 값 타입 데이터의 참조를 전달인자로 보내면 함수 내부에서 참조하여 원래 값을 변경한다.
+// 함수의 전달인자로 보통 값을 복사 해서 전달
+// 값 복사가 아닌 참조를 전달 하려면 입출력 매개변수를 사용한다.
+// 함수형 패러다임에서는 입출력 매개변수를 사용하지 않는 것이 좋다.
+// 참조는 매개변수로 전달될 변수, 상수 앞에 &를 붙여서 표현
 
-// 입출력 매개변수의 잔달 순서
-// 1. 함수를 호출할때 전달인자의 값을 복사
-// 2. 해당 전달인자의 값을 변경하면 1에서 복사한 것을 함수 내부에서 변경
-// 3. 함수를 반환하는 시점에 2에서 변경된 값을 원래의 매개변수에 할당
-
-
-// 입출력 매개변수는 기본값을 가질 수 없다.
-// 가변 매개변수로 사용될 수 없다.
-// 상수는 변경 될 수 없으므로 입출력 매개변수의 전달인자로 사용될 수 없다.
-
-var numbers: [Int] = [1,2,3];
-
+var numbers: [Int] = [1, 2, 3]
 func nonReferenceParameter(_ arr: [Int]) {
     var copiedArr: [Int] = arr;
     copiedArr[1] = 1;
 }
-nonReferenceParameter(numbers);
-print(numbers[1]); // 2
 
 func referenceParameter(_ arr: inout[Int]) {
     arr[1] = 1;
 }
 
-referenceParameter(&numbers); // '&' 로 참조를 표현
-print(numbers[1]); // 1
+nonReferenceParameter(numbers);
+print(numbers); // [1,2,3]
 
+referenceParameter(&numbers); // 참조 매개변수 앞에 &를 붙인다.
+print(numbers); // [1,1,3]
 
-// 7-10 반환값이 없는 함수
-func sayHelloWorld() {
-    print("Hello World");
+// 7-10
+// 반환 값이 없는 함수의 정의
+func sayHelloWord() {
+    print("Hello word");
 }
 
-sayHelloWorld();
-
-
-func sayHello4(from myName2: String, to name: String) {
-    print("Hello \(name)! I'm \(myName2)");
-}
-
-sayHello4(from: "yagom", to: "miju");
-
+sayHelloWord()
 
 func sayGoodbye() -> Void {
-    print("Good bye");
+    print("Good bye")
 }
 
-sayGoodbye();
-
-
-// 데이터 타입으로서의 함수
-// 함수를 데이터 타입으로 사용할 수 있다.
-// func sayType(name: String, times: Int) -> String {}
-// (String, Int) -> String
-
-// func sayDynamics(me: String, names: String...) -> String {}
-// (String, String...) -> String
-
-// func SayHello() {}
-// (Void) -> Void
-// () -> Void
-// () -> ()
-
-
-// 7-11 함수 타입 사용
-
-typealias CalculateTwoInts = (Int, Int) -> Int;
-
-func addTwoInts(_ a: Int, _ b: Int) -> Int {
-    return a + b;
-}
-
-func multiplyTwoInts(_ a: Int, _ b: Int) -> Int {
-    return a * b;
-}
-
-var mathFuntion: CalculateTwoInts = addTwoInts;
-// var mathFunction: (Int, Int) -> Int = addTwoInts; 와 같은 표현
-
-print(mathFuntion(2, 3)); // 5
-
-mathFuntion = multiplyTwoInts;
-
-print(mathFuntion(3, 3)); // 9
-
-// 7-12 전달인자로 함수 전달
-// _ mathFunction: CalculateTwoInts 이 부분을 -> _ mathFunction: (Int, Int) -> Int로 지정해 줘도 된다.
-func printMathResult(_ mathFunction: CalculateTwoInts, _ a: Int, _ b: Int) {
-    print("Result: \(mathFunction(a, b))");
-}
-
-
-printMathResult(addTwoInts, 3, 5);
-
-
-// 7-13 반환값으로 함수를 반환
-func chooseMathFunction(_ toAdd: Bool) -> CalculateTwoInts {
-    return toAdd ? addTwoInts : multiplyTwoInts
-}
-
-printMathResult(chooseMathFunction(true), 3, 5);
-//print(chooseMathFunction(true)(1,2));
-
-// 7-14 원점으로 이동하기 위한 함수 (일반 방식)
-typealias MoveFunc = (Int) -> Int;
-
-func goRight(_ currentPosition: Int) -> Int {
-    return currentPosition + 1;
-}
-
-func goLeft(_ currentPosition: Int) -> Int {
-    return currentPosition - 1;
-}
-
-func functionForMove(_ shouldGoLeft: Bool) -> MoveFunc {
-    
-    return shouldGoLeft ? goLeft : goRight;
-}
-
-var position: Int = 3;
-
-let moveToZero: MoveFunc = functionForMove(position > 0);
-print("원점으로 갑니다");
-
-while position != 0 {
-    print("\(position)...");
-
-    position = moveToZero(position);
-}
-
-print("원점 도착");
-
-// 중첩함수로 구현
-typealias MoveFunc2 = (Int) -> Int;
-
-func functionForMove2(_ shouldGoLeft: Bool) -> MoveFunc2 {
-    func goLeft(_ currentPosition: Int) -> Int {
-        return currentPosition - 1;
-    }
-    
-    func goRight(_ currentPosition: Int) -> Int {
-        return currentPosition + 1;
-    }
-    
-    return shouldGoLeft ? goLeft : goRight;
-}
-
-var pos: Int = -4;
-
-let moveToZero2: MoveFunc2 = functionForMove2(pos > 0); // goRight 함수가 리턴된다
-
-while pos != 0 {
-    print("\(pos)...");
-    pos = moveToZero2(pos);
-}
-
-print("원점 도착");
+sayGoodbye()
