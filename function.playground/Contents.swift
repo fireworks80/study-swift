@@ -157,3 +157,22 @@ func sayGoodbye() -> Void {
 }
 
 sayGoodbye()
+
+// 일급 함수
+typealias CalculateTowInts = (Int, Int) -> Int
+
+func addTwoInts(_ a: Int, _ b: Int) -> Int {
+    return a + b
+}
+
+func multiplyTwoInts(_ a: Int, _ b: Int) -> Int {
+    return a * b
+}
+
+var mathFunction: CalculateTowInts = addTwoInts
+
+print(mathFunction(2, 5)) // 7
+
+mathFunction = multiplyTwoInts
+
+print(mathFunction(2, 5)) // 10
