@@ -159,7 +159,7 @@ func sayGoodbye() -> Void {
 sayGoodbye()
 
 // 일급 함수
-typealias CalculateTowInts = (Int, Int) -> Int
+typealias CalculateTwoInts = (Int, Int) -> Int
 
 func addTwoInts(_ a: Int, _ b: Int) -> Int {
     return a + b
@@ -169,10 +169,126 @@ func multiplyTwoInts(_ a: Int, _ b: Int) -> Int {
     return a * b
 }
 
-var mathFunction: CalculateTowInts = addTwoInts
+var mathFunction: CalculateTwoInts = addTwoInts
 
 print(mathFunction(2, 5)) // 7
 
 mathFunction = multiplyTwoInts
 
 print(mathFunction(2, 5)) // 10
+
+// 매개변수로 함수를 전달 할 수 있다.
+func printMathResult(_ mathFunction: CalculateTwoInts, _ a: Int, _ b: Int) {
+    print("Result: \(mathFunction(a, b))");
+}
+
+printMathResult(addTwoInts, 3, 5)
+
+// 7-13
+// 특정 조건에 따라 적절한 함수를 반환해주는 함수
+func chooseMathFunction(_ toAdd: Bool) -> CalculateTwoInts {
+    return toAdd ? addTwoInts : multiplyTwoInts
+}
+
+printMathResult(chooseMathFunction(true), 3, 5)
+
+
+// 7-14
+// 중첩 함수
+//typealias MoveFunc = (Int) -> Int
+//
+//func goRight(_ currentPosition: Int) -> Int {
+//    return currentPosition + 1
+//}
+//
+//func goLeft(_ currentPosition: Int) -> Int {
+//    return currentPosition - 1
+//}
+//
+//func functionForMove(_ shouldGoLeft: Bool) -> MoveFunc {
+//    return shouldGoLeft ? goLeft : goRight
+//}
+//
+//var position: Int = 3
+//
+//// goLeft 함수가 할당
+//let moveToZero: MoveFunc = functionForMove(position > 0)
+//print("원접으로 갑시다.")
+//
+//while position != 0 {
+//    print("\(position)...")
+//    position = moveToZero(position)
+//}
+//
+//print("원점 도착")
+
+// 7-15
+// 위의 함수를 중첩함수로 구현
+typealias MoveFunc = (Int) -> Int
+
+func functionForMove(_ shouldGoLeft: Bool) -> MoveFunc {
+    func goRight(_ currentPosition: Int) -> Int {
+        return currentPosition + 1
+    }
+    
+    func goLeft(_ currentPosition: Int) -> Int {
+        return currentPosition - 1
+    }
+    
+    return shouldGoLeft ? goLeft : goRight
+}
+
+var position: Int = -4
+
+// position이 0 보다 작으므로 goRight
+let moveToZero: MoveFunc = functionForMove(position > 0)
+
+while position != 0 {
+    print("\(position)")
+    position = moveToZero(position)
+}
+
+print("원점 도착")
+
+// 7 - 16
+// 종료되지 않는 함수
+// 비반환 함수, 비반환 메서드
+// 비반환 함수는 정상적으로 끝날 수 없는 함수
+// 비반환 함수 안에서는 오류를 던진다든가, 중대한 스스템 오류를 보고하는 등이 일을 하고 프로세스를 종료 해버린다.
+// 비반환 함수 반환 타입은 Never
+func crashAndBurn() -> Never {
+    fatalError("Something very, very bad happened")
+}
+
+//crashAndBurn() // 프로세스 종료후 오류 보고
+
+func someFunction(isAllIsWell: Bool) {
+    guard isAllIsWell else {
+        print("마을에 도둑이 들었습니다")
+        crashAndBurn()
+    }
+    print("All is well")
+}
+
+someFunction(isAllIsWell: true)
+//someFunction(isAllIsWell: false)
+
+// 반환값을 무시할 수 있는 함수
+// 프로그래머가 의도족으로 함수의 반환값을 사용하지 않을 경우 컴파일러가 함수의 결과 값을 사용하지 않았다는 경고를
+// 보낼 때가 있는데 이런 경우 함수의 반환 값을 무시해도 된다는 @discardableReuslt 선언 속성을 사용 한다.
+
+// 7-17
+func say(_ something: String) -> String {
+    print(something)
+    return something
+}
+
+
+@discardableResult func discardableResultSay(_ something: String) -> String {
+    print(something)
+    return something
+}
+
+say("hello")
+
+discardableResultSay("hello")
